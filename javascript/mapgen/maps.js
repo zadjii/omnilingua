@@ -46,12 +46,18 @@ function resize () {
   var newSize;
   canvas = document.getElementById("canvas");
   if(canvas == null) return;
-  newSize = document.getElementById("size_box").value;
+  newSize = parseInt( document.getElementById("size_box").value);
+  if(isNaN(newSize)){
+    document.getElementById("size_box").value = size;
+    return;
+  }
+
   if(newSize > MAX_SIZE)newSize = MAX_SIZE;
   if(newSize < 1)newSize = 1;
   canvas.width = newSize;
   canvas.height = newSize;
   size = newSize;
+  document.getElementById("size_box").value = size;
   initializeCanvas();
 }
 
@@ -63,7 +69,7 @@ function onPageLoad(){
 
 function generate () {
   updateSeed();
-
+  generateMap(canvas, size, random);
 
 }
 function getNewSeed(){
@@ -83,6 +89,7 @@ function updateSeed () {
     //alert("false " + seed);
   }
   document.getElementById("seed_text").innerHTML = ("Current Seed: " + seed);
+  seed_random(seed);
 }
 function onKeyDown(event){}
 function onKeyUp(event){}
