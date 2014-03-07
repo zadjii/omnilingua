@@ -6,7 +6,7 @@ Allows the user to specify the seed and size of the map.
 There isn't really a mechanism currently to directly save it
 */
 
-var MAX_SIZE = 512;
+var MAX_SIZE = 1024;
 // var MAPS_DIRECTORY = __dirname + "/maps/";
 // var FAVS_DIRECTORY = __dirname + "/maps/fav/";
 
