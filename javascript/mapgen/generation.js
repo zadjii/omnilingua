@@ -21,11 +21,11 @@ function generateMap (canvas, size, random) {
   }
   //grid, origin, drops, increment, rollingThreshold, radius,  minHeight,  maxHeight
   // brownianGen00(heights, new vec2(-1,-1), 2*size*size, .01, size, 0, 0.5);
-  floatDrop00(heights, new vec2(-1,-1), 2*size*size, .04, .03, size*.6, 0, 0.9);
+  floatDrop00(heights, new vec2(-1,-1), 2*size*size, .02, .03, size*.26, 0, 0.9);
   
   // brownianGen00(heights, new vec2(-1,-1), 2*size*size, .02, size*.6, 0, 0.5);
-  brownianGen00(heights, new vec2(-1,-1), 2*size*size, .01, size*.6, 0, 0.5);
-  brownianPolygonGen00(heights, new vec2(size/2, size/2), 10*size, .2, size*.6, 0, 0.5);
+  brownianGen00(heights, new vec2(-1,-1), 2*size*size, .01, size*.26, 0, 0.5);
+  brownianPolygonGen00(heights, new vec2(size/2, size/2), 10*size, .2, size*.26, 0, 0.5);
   // brownianPolygonGen00(heights, new vec2(size/2, size/2), 10*size, .2, size*.6, 0, 0.5);
   // brownianPolygonGen00(heights, new vec2(size/2, size/2), 10*size, .2, size*.6, 0, 0.5);
   // brownianGen00(heights, new vec2(-1,-1), 2*size*size, .01, size*.6, 0, 0.5);
@@ -78,10 +78,11 @@ function drawVec3Map (vec3grid, canvas) {
 function floatDrop00(grid, origin, drops, increment, rollingThreshold, radius,  minHeight,  maxHeight) {
   var size = grid.length;
   if(!gridContains(grid, origin))
-    origin = new vec2(
-      size/2 + (random() * radius/2) - radius/4,
-      size/2 + (random() * radius/2) - radius/4
-    );
+    // origin = new vec2(
+    //   size/2 + (random() * radius/2) - radius/4,
+    //   size/2 + (random() * radius/2) - radius/4
+    // );
+    origin = new vec2(random()*size, random()*size);
   var pos = new vec2(parseInt(origin.x), parseInt(origin.y));
   var height;
   var placed;
@@ -143,10 +144,11 @@ function brownianGen00(grid, origin, iterations, increment, radius, minHeight, m
   var directions = [new vec2(-1,0),new vec2(1,0),new vec2(0,-1),new vec2(0,1)];
   var size = grid.length;
   if(!gridContains(grid, origin))
-    origin = new vec2(
-      size/2 + (random() * radius/2) - radius/4,
-      size/2 + (random() * radius/2) - radius/4
-    );
+    // origin = new vec2(
+    //   size/2 + (random() * radius/2) - radius/4,
+    //   size/2 + (random() * radius/2) - radius/4
+    // );
+    origin = new vec2(random()*size, random()*size);
   var pos = new vec2(parseInt(origin.x), parseInt(origin.y));
 
   for(var dropped = 0; dropped < iterations; dropped++){
@@ -181,10 +183,11 @@ function brownianPolygonGen00(grid, origin, iterations, increment, radius, minHe
   var poly = new Polygon();
   var size = grid.length;
   if(!gridContains(grid, origin))
-    origin = new vec2(
-      size/2 + (random() * radius/2) - radius/4,
-      size/2 + (random() * radius/2) - radius/4
-    );
+    // origin = new vec2(
+    //   size/2 + (random() * radius/2) - radius/4,
+    //   size/2 + (random() * radius/2) - radius/4
+    // );
+    origin = new vec2(random()*size, random()*size);
   var pos = new vec2(parseInt(origin.x), parseInt(origin.y));
 
   for(var dropped = 0; dropped < iterations; dropped++){
