@@ -35,6 +35,12 @@ function random(){
     var result = ((m_z << 16) + m_w) & mask;
     result /= 4294967296;
     return result + 0.5;
+    // return result;
+}
+
+// [min,max) - think array indexing 
+function randomInt (min, max) {
+  return Math.floor(random() * (max - min)) + min;
 }
 /**
   Resizes the canvas and the map.

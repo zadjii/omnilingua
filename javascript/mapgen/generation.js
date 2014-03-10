@@ -20,16 +20,20 @@ function generateMap (canvas, size, random) {
     }
   }
   //grid, origin, drops, increment, rollingThreshold, radius,  minHeight,  maxHeight
-  // brownianGen00(heights, new vec2(-1,-1), 2*size*size, .01, size, 0, 0.5);
+  brownianGen00(heights, new vec2(-1,-1), 2*size*size, .02, size, 0, 0.5);
   floatDrop00(heights, new vec2(-1,-1), 0.5*size*size, .04, .05, size*.26, 0, 0.9);
+  brownianPolygonGen00(heights, new vec2(-1,-1), 10*size, .25, size*.26, 0, 0.5);
+  // floatDrop00(heights, new vec2(-1,-1), 0.5*size*size, .04, .05, size*.26, 0, 0.9);
+  // floatDrop00(heights, new vec2(-1,-1), 0.5*size*size, .04, .05, size*.26, 0, 0.9);
   smoothFloats(heights, 2);
+
   // floatDrop00(heights, new vec2(-1,-1), 100*size, .04, .05, size*.26, 0, 0.9);
   // floatDrop00(heights, new vec2(-1,-1), 100*size, .04, .05, size*.26, 0, 0.9);
   // floatDrop00(heights, new vec2(-1,-1), 100*size, .04, .05, size*.26, 0, 0.9);
   // floatDrop00(heights, new vec2(-1,-1), 100*size, .04, .05, size*.26, 0, 0.9);
   // brownianGen00(heights, new vec2(-1,-1), 2*size*size, .01, size*.26, 0, 0.8);
 
-  // brownianPolygonGen00(heights, new vec2(size/2, size/2), 10*size, .2, size*.26, 0, 0.5);
+  
   // brownianPolygonGen00(heights, new vec2(size/2, size/2), 10*size, .2, size*.6, 0, 0.5);
   // brownianPolygonGen00(heights, new vec2(size/2, size/2), 10*size, .2, size*.6, 0, 0.5);
   // brownianGen00(heights, new vec2(-1,-1), 2*size*size, .01, size*.6, 0, 0.5);
@@ -37,7 +41,8 @@ function generateMap (canvas, size, random) {
   // floatDrop00(heights, new vec2(-1,-1), 5*size*size, .01, .01, size*.6, 0, 0.9);
   // floatDrop00(heights, new vec2(size/2, size/2), 5*size*size, .01, .02, size, 0, 0.9);
   
-  drawFloatMap(heights, canvas);
+  // drawFloatMap(heights, canvas);
+  drawMap(heights, null, canvas);
 
   // floatDrop00(heights, new vec2(-1, -1), 10*size*size, .01, .02, size, 0, 1.0);
   // drawFloatMap(heights, canvas);
@@ -48,34 +53,6 @@ function generateMap (canvas, size, random) {
 
 }
 
-function drawFloatMap (floatgrid, canvas) {
-  var ctx;
-  if (canvas.getContext)
-    ctx = canvas.getContext("2d");
-  if (ctx == null || ctx == undefined) return;
-
-  for (var x = 0; x < floatgrid.length; x++) {
-    for (var y = 0; y < floatgrid.length; y++) {
-      //console.log( rgb(floatgrid[x][y]));
-      ctx.fillStyle = floatrgb(floatgrid[x][y]);
-      ctx.fillRect(x, y, 1, 1);
-    }
-  }
-}
-function drawVec3Map (vec3grid, canvas) {
-  var ctx;
-  if (canvas.getContext)
-    ctx = canvas.getContext("2d");
-  if (ctx == null || ctx == undefined) return;
-
-  for (var x = 0; x < vec3grid.length; x++) {
-    for (var y = 0; y < vec3grid.length; y++) {
-      //console.log( rgb(floatgrid[x][y]));
-      ctx.fillStyle = vec3rgb(vec3grid[x][y]);
-      ctx.fillRect(x, y, 1, 1);
-    }
-  }
-}
 
 
 
@@ -124,7 +101,7 @@ function floatDrop00(grid, origin, drops, increment, rollingThreshold, radius,  
     var oldY = y;
 
     var step = 2.0;
-    var index = parseInt(random() * directions.length);
+    var index = randomInt(0, directions.length);
     var newX = x + (directions[index].x)*step;
     var newY = y + (directions[index].y)*step;
 
@@ -158,7 +135,12 @@ function floatDrop00(grid, origin, drops, increment, rollingThreshold, radius,  
 }
 
 function brownianGen00(grid, origin, iterations, increment, radius, minHeight, maxHeight){
-  var directions = [new vec2(-1,0),new vec2(1,0),new vec2(0,-1),new vec2(0,1)];
+  var directions = [
+    new vec2(-1,0),
+    new vec2(1,0),
+    new vec2(0,-1),
+    new vec2(0,1)
+  ];
   var size = grid.length;
   if(!gridContains(grid, origin))
     // origin = new vec2(
@@ -179,12 +161,17 @@ function brownianGen00(grid, origin, iterations, increment, radius, minHeight, m
     if(grid[x][y] >= minHeight && grid[x][y] < maxHeight)
       grid[x][y] += increment;
 
-    var index = parseInt(random() * directions.length);
-    
+    // var index = parseInt(random() * directions.length);
+    var index = randomInt(0, directions.length);
+
     var step = 1.0;
     var oldX = x;
     var oldY = y;
-
+    if(directions[index] == undefined){
+      console.log(index);
+      console.log(directions);
+      console.log(random);
+    }
     var newX = x + (directions[index].x)*step;
     var newY = y + (directions[index].y)*step;
 
@@ -232,7 +219,7 @@ function brownianPolygonGen00(grid, origin, iterations, increment, radius, minHe
       poly.add(new vec2(x, y));
     }
 
-    var index = parseInt(random() * directions.length);
+    var index = randomInt(0, directions.length);
     
     var step = 2.0;
     var oldX = x;
@@ -318,19 +305,6 @@ function gridContains(grid, point){
   if(point.y >= size)return false;
   return true;
 }
-function floatrgb (value) {
-  if(value > 1.0)
-    return "rgb("+parseInt(value)+","+parseInt(value)+","+parseInt(value)+")";
-  else
-    return "rgb("+parseInt(value*256)+","+parseInt(value*256)+","+parseInt(value*256)+")";
-}
-function vec3rgb (value) {
-  if(value.r() > 1.0 || value.g() > 1.0 || value.b() > 1.0)
-    return "rgb("+parseInt(value.r())+","+parseInt(value.g())+","+parseInt(value.b())+")";
-  else
-    return "rgb("+parseInt(value.r()*256)+","+parseInt(value.g() * 256)+","+parseInt(value.b() * 256)+")";
-}
-
 
 
 
