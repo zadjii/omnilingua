@@ -24,6 +24,6 @@
   ;; auto-compilation of :main.
   :main hello-world.core
 
-  )
+)
 
 
