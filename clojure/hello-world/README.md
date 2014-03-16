@@ -1,10 +1,10 @@
 # hello-world
 
-A Clojure library designed to ... well, that part is up to you.
+A whole bunch of random Clojure code as I learn the language.
 
 ## Usage
 
-FIXME
+It seems that you just need to do 'lein run' from within the hello-world directory.
 
 ## License
 
