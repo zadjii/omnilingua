@@ -23,23 +23,12 @@
   [x]
   (println x ": Hello, World!"))
 
+;it works!
 (defn init-grid
   "Initializes a 2d array, with the specified size and initial value"
   [size, initial]
-  (def grid [])
-  
-  (loop [i 0]
-    (if(< i size)
-      (do;then
-        ;;(println "arbitrary debug 0")
-        (conj grid []);so this doesn't actually add a sub-element,
-                      ; but it's a start
-        (recur (inc i))
-      )
-      grid;else
-    )
-  )
-  ;(grid)
+  (let [row (vec (repeat size initial))]
+    (vec (repeat size row)))
 )
 
 ;from tutorial
@@ -96,7 +85,55 @@
   (println (. mRand nextDouble));@Haskell see now was that soo hard 
 
   (println [[],[]])
-  (println (init-grid 5 0.0))
+  (def grid (init-grid 5 0.0))
+  (def line (vec (repeat 5 1.0)))
+  
+  (println grid)
+  (println line)
+
+  (println (grid 0));also accesses the element at 0
+  (println (line 0)); accesses the element at 0
+
+  ;;both of these get you the element at 0,0
+  (println ((grid 0)0))
+  (println (get-in grid [0 0]))
+
+  (assoc line 0 4)
+  (println line)
+  (println (assoc line 0 4))
+
+  ;imagine the grid as a vector at the top from left to right,
+  ; pointing to vectors beneath it whose indicies increase top to bottom
+
+  ;(get grid index) returns the vector at index from the 2d grid 
+  ; (println (get grid 0))
+  ; (println (get (get grid 0) 0));this returns a single element @ 0,0
+  ; (assoc grid 0 (assoc (get grid 0) 1 4.0));should set 0, 1 to 4, BUT DOESNT
+  ; (println grid)
+
+  ;;From: http://stackoverflow.com/a/8256512
+  ;For maximum performance of numerical code in Clojure you will want to use:
+  ;arrays, because you want mutable storage with very fast writes and lookup. 
+  ;   Clojure sequences and vectors are beautiful, but they come with overheads
+  ;   that you probably want to avoid for truly performance-critical code
+  ;double primitives, because they offer much faster maths.
+  ;aset / aget / areduce - these are extremely fast operations designed for 
+  ;   arrays and basically give you the same bytecode as pure Java equivalents.
+  ;imperative style - although it's unidiomatic in Clojure, it gets the 
+  ;   fastest results (mainly because you can avoid overheads from memory
+  ;   allocations, boxing and function calls). An example would be using 
+  ;   dotimes for a fast imperative loop.
+  ;(set! *warn-on-reflection* true) - and eliminate any warnings your code
+  ;   produces, because reflection is a big performance killer.
+
+  (def newArray (make-array Double/TYPE 5 5))
+  (println newArray);prints it's address
+  (println (aget newArray 0));print's a simgle array's address
+  (println (aget newArray 0,0));print's a simgle element's value
+  (aset newArray 0, 0, 5.0)
+  (println (aget newArray 0,0));I think I've done it?
+
+
 )
 
 
