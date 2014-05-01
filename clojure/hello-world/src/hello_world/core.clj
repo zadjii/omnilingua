@@ -31,6 +31,24 @@
     (vec (repeat size row)))
 )
 
+; (defn init-grid-map
+;   "Initializes a map made with keys that are 2d vector \"coodinates\""
+;   [size, initial]
+;   (let [grid (hash-map)]
+;     (loop [x 0]
+;       (if (< x size)
+;         (loop [y 0]
+            
+;         )
+;         (recur )
+;       )
+      
+;     )
+
+;   )
+  
+; )
+
 ;from tutorial
 (defn square-corners 
   "Returns a 2D array (or list?) where the inner arrays are corners of a
@@ -133,6 +151,9 @@
   (aset newArray 0, 0, 5.0)
   (println (aget newArray 0,0));I think I've done it?
 
+
+  ;And now I feel as it this isn't necessarily FP enough, and the point is
+  ;   to learn how to think functionally.
 
 )
 
